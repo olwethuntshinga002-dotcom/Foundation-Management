@@ -1,0 +1,28 @@
+using System;
+ 
+namespace FoundationManagement.Models
+{
+    // Data posted by the donor's Create Pledge form.
+    // The donor is NOT posted: the controller takes it from the logged-in user.
+    public class DonorPledgeFormViewModel
+    {
+        public string DonationType { get; set; }
+        public string ItemName { get; set; }
+        public decimal Quantity { get; set; }
+        public string UnitOfMeasure { get; set; }
+        public DateTime ExpectedDate { get; set; }
+    }
+ 
+    // One row in the donor's Pledge History page
+    public class DonorPledgeRow
+    {
+        public int PledgeId { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string DonationType { get; set; }
+        public string ItemName { get; set; }
+        public decimal Quantity { get; set; }
+        public string UnitOfMeasure { get; set; }
+        public DateTime ExpectedDate { get; set; }
+        public string Status { get; set; }
+    }
+}

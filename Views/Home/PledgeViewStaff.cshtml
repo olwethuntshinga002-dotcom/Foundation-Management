@@ -1,0 +1,170 @@
+@model List<FoundationManagement.Models.PledgeRow>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pledges — MealCare</title>
+    <link rel="stylesheet" href="~/css/DashStaff.css" />
+    <link rel="stylesheet" href="~/css/FoodDonations.css" />
+</head>
+<body>
+<div class="app">
+    <!--Sidebar-->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="brand-mark">M</div>
+            <span>MealCare</span>
+        </div>
+        <nav class="navigation">
+            <a href="/Home/Index" class="nav-link" data-nav="home">
+                <span class="nav-icon"></span>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-link" data-nav="profile">
+                <span class="nav-icon"></span>
+                <span>My Profile</span>
+            </a>
+            <a href="/Home/FoodDonations" class="nav-link" data-nav="food-donations">
+                <span class="nav-icon"></span>
+                <span>Food Donations</span>
+            </a>
+            <a href="/Home/ClothingDonations" class="nav-link" data-nav="clothing-donations">
+                <span class="nav-icon"></span>
+                <span>Clothing Donations</span>
+            </a>
+            <a href="#" class="nav-link" data-nav="attendance">
+                <span class="nav-icon"></span>
+                <span>Attendance</span>
+            </a>
+            <div class="menu-group">
+                <button class="menu-header" type="button">
+                    <span>
+                        <span class="nav-icon"></span>
+                        Inventory
+                    </span>
+                    <span class="arrow">⌄</span>
+                </button>
+                <div class="submenu">
+                    <div>
+                        <a href="/Home/FoodStock">Food Stock</a>
+                        <a href="#">Clothing Stock</a>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-group open">
+                <button class="menu-header" type="button">
+                    <span>
+                        <span class="nav-icon"></span>
+                        Pledges
+                    </span>
+                    <span class="arrow">⌄</span>
+                </button>
+                <div class="submenu">
+                    <div>
+                        <a href="/Home/Pledges" class="active">View Pledges</a>
+                        <a href="/Home/Pledges">Update Pledge Status</a>
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="nav-link" data-nav="reports">
+                <span class="nav-icon"></span>
+                <span>Reports</span>
+            </a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="#" class="nav-link">
+                <span class="nav-icon"></span>
+                <span>Settings</span>
+            </a>
+            <a href="/Account/Logout" class="nav-link logout">
+                <span class="nav-icon"></span>
+                <span>Sign Out</span>
+            </a>
+        </div>
+    </aside>
+    <!--Main Area-->
+    <main class="main" id="main">
+        <header class="topbar">
+            <button id="navigationButton" class="navigation-button" type="button" aria-label="Toggle sidebar">
+                ☰
+            </button>
+            <div class="page-title">Pledges</div>
+            <div class="user">
+                <div class="avatar">A</div>
+                <div class="user-details">
+                    <strong>Amy</strong>
+                    <small>Staff</small>
+                </div>
+            </div>
+        </header>
+
+        <section class="content">
+            <div class="page-header">
+                <div>
+                    <h1>Pledges</h1>
+                    <p>Every donor pledge on record. Staff can update the status of a pledge.</p>
+                </div>
+            </div>
+
+            <div class="form-panel">
+                @* Show a friendly message if the list is empty, otherwise show the table *@
+                @if (Model.Count == 0)
+                {
+                    <p style="color: var(--ink-muted); font-size: 14px;">No pledges recorded yet.</p>
+                }
+                else
+                {
+                    <!-- overflow-x lets the table scroll sideways on small screens -->
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Donation Type</th>
+                                    <th>Item Name</th>
+                                    <th>Quantity</th>
+                                    <th>Unit of Measure</th>
+                                    <th>Item Count</th>
+                                    <th>Current Date</th>
+                                    <th>Expected Date</th>
+                                    <th>Status</th>
+                                    <th>Recorded By</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var row in Model)
+                                {
+                                    <tr>
+                                        <td>@row.DonationType</td>
+                                        <td>@row.ItemName</td>
+                                        <td>@row.Quantity</td>
+                                        <td>@row.UnitOfMeasure</td>
+                                        <td>@row.CurrentDate</td>
+                                        <td>@row.ExpectedDate</td>
+                                        <td>@row.Status</td>
+                                        <td>@row.RecordedBy</td>
+                                        <!-- The PledgeId in the URL tells the controller which pledge to load -->
+                                        <td><a href="/Home/UpdatePledgeStatus/@row.PledgeID">Update Status</a></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </section>
+    </main>
+</div>
+<div class="toast-stack" id="toastStack"></div>
+@* Success message set by the controller after a status update (TempData lasts one redirect) *@
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="toast" id="successToast">@TempData["SuccessMessage"]</div>
+}
+<script src="~/js/DashStaff.js"></script>
+</body>
+</html>

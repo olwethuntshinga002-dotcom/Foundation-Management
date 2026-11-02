@@ -1,0 +1,102 @@
+@using System.Security.Claims
+@{
+    var fullName  = User.FindFirst("FullName")?.Value ?? User.Identity?.Name ?? "Guest";
+    var roleLabel = User.IsInRole("Donor") ? "Donor" : (User.IsInRole("Staff") ? "Staff" : "Member");
+    var initial   = string.IsNullOrWhiteSpace(fullName) ? "?" : fullName.Trim().Substring(0, 1).ToUpper();
+
+    // Highlights the current page in the sidebar
+    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "Index";
+    string Active(string name) => string.Equals(action, name, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MealCare</title>
+    <link rel="stylesheet" href="~/css/DashStaff.css" />
+    <link rel="stylesheet" href="~/css/DonorExtras.css" />
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-mark">M</div>
+            <span>MealCare</span>
+        </div>
+
+        <nav class="navigation">
+
+            <a href="/Donor/Index" class="nav-link @Active("Index")" data-nav="home">
+                <span>Home</span>
+            </a>
+
+            <div class="menu-group open">
+                <button class="menu-header" type="button">
+                    <span>Donor</span>
+                    <span class="arrow">⌄</span>
+                </button>
+
+                <div class="submenu">
+                    <div>
+                        <a href="/Donor/Profile" class="@Active("Profile")">My Profile</a>
+                        <a href="/Donor/NgoInventory" class="@Active("NgoInventory")">NGOs Inventory</a>
+                        <a href="/Donor/Pledges" class="@Active("Pledges")">Pledges</a>
+                        <a href="/Donor/MyDonations" class="@Active("MyDonations")">My Donations</a>
+                        <a href="/Donor/DonatableItems" class="@Active("DonatableItems")">Donatable Items</a>
+                    </div>
+                </div>
+            </div>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="/Account/Logout" class="nav-link logout">
+                <span>Sign Out</span>
+            </a>
+        </div>
+
+    </aside>
+
+    <!-- Main Area -->
+    <main class="main" id="main">
+
+        <header class="topbar">
+
+            <button id="navigationButton" class="navigation-button" type="button" aria-label="Toggle sidebar">
+                ☰
+            </button>
+
+            <div class="page-title">MealCare</div>
+
+            <a href="/Donor/Profile" class="user" title="My Profile">
+                <div class="avatar">@initial</div>
+                <div class="user-details">
+                    <strong>@fullName</strong>
+                    <small>@roleLabel</small>
+                </div>
+            </a>
+
+        </header>
+
+        <section class="content">
+            @RenderBody()
+        </section>
+
+    </main>
+
+</div>
+
+<script src="~/js/donor.js"></script>
+@await RenderSectionAsync("Scripts", required: false)
+
+</body>
+
+</html>

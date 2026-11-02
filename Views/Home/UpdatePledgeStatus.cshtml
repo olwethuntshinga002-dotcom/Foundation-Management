@@ -1,0 +1,195 @@
+@model FoundationManagement.Models.PledgeStatusFormViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Pledge Status — MealCare</title>
+    <link rel="stylesheet" href="~/css/DashStaff.css" />
+    <link rel="stylesheet" href="~/css/FoodDonations.css" />
+</head>
+<body>
+<div class="app">
+    <!--SIDEBAR-->
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="brand-mark">M</div>
+            <span>MealCare</span>
+        </div>
+        <nav class="navigation">
+            <a href="/Home/Index" class="nav-link" data-nav="home">
+                <span class="nav-icon"></span>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-link" data-nav="profile">
+                <span class="nav-icon"></span>
+                <span>My Profile</span>
+            </a>
+            <a href="/Home/FoodDonations" class="nav-link" data-nav="food-donations">
+                <span class="nav-icon"></span>
+                <span>Food Donations</span>
+            </a>
+            <a href="/Home/ClothingDonations" class="nav-link" data-nav="clothing-donations">
+                <span class="nav-icon"></span>
+                <span>Clothing Donations</span>
+            </a>
+            <a href="#" class="nav-link" data-nav="attendance">
+                <span class="nav-icon"></span>
+                <span>Attendance</span>
+            </a>
+            <div class="menu-group">
+                <button class="menu-header" type="button">
+                    <span>
+                        <span class="nav-icon"></span>
+                        Inventory
+                    </span>
+                    <span class="arrow">⌄</span>
+                </button>
+                <div class="submenu">
+                    <div>
+                        <a href="/Home/FoodStock">Food Stock</a>
+                        <a href="#">Clothing Stock</a>
+                    </div>
+                </div>
+            </div>
+            <div class="menu-group open">
+                <button class="menu-header" type="button">
+                    <span>
+                        <span class="nav-icon"></span>
+                        Pledges
+                    </span>
+                    <span class="arrow">⌄</span>
+                </button>
+                <div class="submenu">
+                    <div>
+                        <a href="/Home/Pledges">View Pledges</a>
+                        <!--Links to the pledge currently being edited, so this stays highlighted-->
+                        <a href="/Home/UpdatePledgeStatus/@Model.PledgeID" class="active">Update Pledge Status</a>
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="nav-link" data-nav="reports">
+                <span class="nav-icon"></span>
+                <span>Reports</span>
+            </a>
+        </nav>
+        <div class="sidebar-bottom">
+            <a href="#" class="nav-link">
+                <span class="nav-icon"></span>
+                <span>Settings</span>
+            </a>
+            <a href="/Account/Logout" class="nav-link logout">
+                <span class="nav-icon"></span>
+                <span>Sign Out</span>
+            </a>
+        </div>
+    </aside>
+    <!--Main Area-->
+    <main class="main" id="main">
+        <header class="topbar">
+            <button id="navigationButton" class="navigation-button" type="button" aria-label="Toggle sidebar">
+                ☰
+            </button>
+            <div class="page-title">Update Pledge Status</div>
+            <div class="user">
+                <div class="avatar">A</div>
+                <div class="user-details">
+                    <strong>Amy</strong>
+                    <small>Staff</small>
+                </div>
+            </div>
+        </header>
+        <section class="content">
+            <div class="page-header">
+                <div>
+                    <h1>Update Pledge Status</h1>
+                    <p>Change where this pledge stands. Nothing else on the pledge can be edited.</p>
+                </div>
+            </div>
+            @* Only shows if the controller added errors to ModelState *@
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="form-panel" style="border-color: var(--danger); margin-bottom: 16px;">
+                    <div asp-validation-summary="All" style="color: var(--danger); font-size: 13.5px;"></div>
+                </div>
+            }
+            <form asp-action="UpdatePledgeStatus" asp-controller="Home" method="post" novalidate>
+                <!-- PledgeId is sent back so the controller knows which pledge to update -->
+                <input type="hidden" name="PledgeId" value="@Model.PledgeID" />
+                <!--Pledge details (read only) -->
+                <div class="form-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Pledge Details</h2>
+                            <p>For reference only</p>
+                        </div>
+                    </div>
+                    <!--Everything but the PledgeID and Status is disabled, since they are the only ones used -->
+                    <div class="form-grid">
+                        <div class="field">
+                            <label>Donation Type</label>
+                            <input type="text" value="@Model.DonationType" disabled />
+                        </div>
+                        <div class="field">
+                            <label>Item Name</label>
+                            <input type="text" value="@Model.ItemName" disabled />
+                        </div>
+                        <div class="field">
+                            <label>Quantity</label>
+                            <input type="text" value="@Model.Quantity @Model.UnitOfMeasure" disabled />
+                        </div>
+                        <div class="field">
+                            <label>Current Date</label>
+                            <input type="text" value="@Model.CurrentDate" disabled />
+                        </div>
+                        <div class="field">
+                            <label>Expected Date</label>
+                            <input type="text" value="@Model.ExpectedDate" disabled />
+                        </div>
+                        <div class="field">
+                            <label>Recorded By</label>
+                            <input type="text" value="@Model.RecordedBy" disabled />
+                        </div>
+                    </div>
+                </div>
+                <!--Status(the only thing staff can change)-->
+                <div class="form-panel">
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Status</h2>
+                            <p>Choose the new status for this pledge</p>
+                        </div>
+                    </div>
+                    <div class="form-grid">
+                        <div class="field">
+                            <label for="status">Pledge </label>Status
+                            @* The selected attribute pre-selects the pledge's current status *@
+                            <select id="status" name="Status" required>
+                                <option value="Review"       selected="@(Model.Status == "Review")">Review</option>
+                                <option value="Honoured"     selected="@(Model.Status == "Honoured")">Honoured</option>
+                                <option value="Not Honoured" selected="@(Model.Status == "Not Honoured")">Not Honoured</option>
+                                <option value="Cancelled"    selected="@(Model.Status == "Cancelled")">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a href="/Home/Pledges" class="secondary-button" style="text-align:center; text-decoration:none;">Cancel</a>
+                    <button type="submit" class="primary-button">Update</button>
+                </div>
+            </form>
+        </section>
+    </main>
+</div>
+<div class="toast-stack" id="toastStack"></div>
+@* Success message set by the controller (TempData lasts one redirect) *@
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="toast" id="successToast">@TempData["SuccessMessage"]</div>
+}
+<script src="~/js/DashStaff.js"></script>
+</body>
+</html>

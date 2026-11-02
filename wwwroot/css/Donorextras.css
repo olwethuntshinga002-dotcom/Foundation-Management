@@ -1,0 +1,23 @@
+/* Small additions used by the donor area and register page.
+   The "Create account" and field-error rules are also needed in login.css. */
+
+/* Make the profile area in the topbar behave like a link without looking like one */
+a.user {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+/* Links styled as buttons / quick actions */
+a.primary-button,
+a.quick-action {
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Highlight for the current page inside a submenu */
+.submenu a.active {
+    font-weight: 600;
+}

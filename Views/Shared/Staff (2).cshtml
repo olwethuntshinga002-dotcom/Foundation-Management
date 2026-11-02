@@ -1,0 +1,129 @@
+@model FoundationManagement.Models.StaffPageViewModel
+@{
+    ViewData["Title"] = "Staff accounts";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foundation Management - Staff accounts</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/auth.css">
+</head>
+
+<body>
+<div class="shell">
+
+    <div class="topbar">
+        <div>
+            <h1>Staff accounts</h1>
+            <p>@Model.FoundationName &middot; staff usernames end in <b>@@@Model.EmailDomain</b></p>
+        </div>
+        <a class="btn btn-ghost btn-sm" asp-controller="Home" asp-action="Index">Back to dashboard</a>
+    </div>
+
+    @if (TempData["StaffMessage"] is string msg)
+    {
+        <div class="alert alert-ok" role="status">@msg</div>
+    }
+    @if (!string.IsNullOrEmpty(ViewBag.StaffError as string))
+    {
+        <div class="alert alert-error" role="alert">@ViewBag.StaffError</div>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.TempPassword))
+    {
+        <div class="creds">
+            <strong>Share these login details with the staff member.</strong>
+            They are shown once only. They will be asked to set their own password at first sign-in.
+            <code>Username: @Model.NewUsername</code>
+            <code id="tempPw">Temporary password: @Model.TempPassword</code>
+            <button type="button" class="btn btn-ghost btn-sm" id="copyCreds">Copy details</button>
+        </div>
+    }
+
+    <div class="grid2">
+
+        <section class="panel-box">
+            <h2>Add a staff member</h2>
+            <form asp-action="AddStaff" asp-controller="Account" method="post" novalidate>
+                <div class="field">
+                    <label asp-for="NewStaff.FullName"></label>
+                    <input asp-for="NewStaff.FullName" type="text" placeholder="e.g. Sipho Dlamini">
+                    <span asp-validation-for="NewStaff.FullName" class="err"></span>
+                </div>
+                <div class="field">
+                    <label asp-for="NewStaff.UsernameLocalPart"></label>
+                    <div class="compose">
+                        <input asp-for="NewStaff.UsernameLocalPart" type="text" placeholder="sipho" autocapitalize="off" spellcheck="false">
+                        <span class="suffix">@@@Model.EmailDomain</span>
+                    </div>
+                    <span asp-validation-for="NewStaff.UsernameLocalPart" class="err"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Create account</button>
+            </form>
+        </section>
+
+        <section class="panel-box">
+            <h2>Your staff (@Model.Staff.Count)</h2>
+            @if (!Model.Staff.Any())
+            {
+                <p class="empty">No staff accounts yet. Add your first team member.</p>
+            }
+            else
+            {
+                <table>
+                    <thead>
+                        <tr><th>Name</th><th>Username</th><th>Status</th><th></th></tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var s in Model.Staff)
+                    {
+                        <tr>
+                            <td>@s.FullName</td>
+                            <td>@s.Username</td>
+                            <td>
+                                @if (s.MustChangePassword)
+                                {
+                                    <span class="badge badge-warn">Pending first login</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-ok">Active</span>
+                                }
+                            </td>
+                            <td>
+                                <form asp-action="ResetStaffPassword" asp-controller="Account" method="post"
+                                      onsubmit="return confirm('Reset the password for @s.FullName?');">
+                                    <input type="hidden" name="id" value="@s.Id">
+                                    <button type="submit" class="btn btn-ghost btn-sm">Reset password</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            }
+        </section>
+
+    </div>
+</div>
+
+<script>
+    const copyBtn = document.getElementById('copyCreds');
+    if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+            const text = [...document.querySelectorAll('.creds code')].map(c => c.textContent).join('\n');
+            try { await navigator.clipboard.writeText(text); copyBtn.textContent = 'Copied'; }
+            catch { copyBtn.textContent = 'Copy failed'; }
+        });
+    }
+</script>
+</body>
+</html>

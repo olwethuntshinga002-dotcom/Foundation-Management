@@ -1,0 +1,150 @@
+/* =========================
+   FOOD DONATIONS RECEIVED
+   (page-specific styles — relies on tokens & shared
+   components already defined in staff.css)
+   ========================= */
+
+/* =========================
+   PAGE HEADER
+   ========================= */
+
+/* =========================
+   FOOD DONATIONS RECEIVED
+   (page-specific styles — relies on tokens & shared
+   components already defined in staff.css)
+   ========================= */
+
+/* =========================
+   PAGE HEADER
+   ========================= */
+
+.page-header {
+    margin-bottom: 28px;
+}
+
+.page-header h1 {
+    margin: 0 0 6px;
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.page-header p {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 15px;
+}
+
+/* FORM PANELS */
+
+.form-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-bottom: 16px;
+}
+
+.form-panel .panel-heading {
+    margin-bottom: 18px;
+}
+
+/* FORM GRID */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px 20px;
+}
+
+.form-grid .field {
+    margin-bottom: 0;
+}
+
+.field-wide {
+    grid-column: 1 / -1;
+}
+
+/* Disabled / system-set fields read as quiet, not broken */
+.field select:disabled,
+.field input:disabled {
+    background: var(--surface-alt);
+    color: var(--ink-muted);
+    cursor: not-allowed;
+}
+
+/* FORM ACTIONS */
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.form-actions .primary-button,
+.form-actions .secondary-button {
+    flex: 0 0 auto;
+    min-width: 140px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 700px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .field-wide {
+        grid-column: auto;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .form-actions .primary-button,
+    .form-actions .secondary-button {
+        width: 100%;
+    }
+}
+
+/* DATA TABLE(used by report/listing pages like Food Stock) */
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+}
+
+.data-table th,
+.data-table td {
+    text-align: left;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+}
+
+.data-table th {
+    color: var(--ink-muted);
+    font-weight: 600;
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+.data-table tbody tr:hover {
+    background: var(--surface-alt);
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Highlight the current page within a sidebar submenu */
+.submenu a.active {
+    color: var(--accent-dark);
+    font-weight: 600;
+    background: var(--accent-soft);
+}

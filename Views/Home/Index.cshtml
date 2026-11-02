@@ -1,0 +1,328 @@
+@using System.Security.Claims
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = null;
+
+    var fullName  = User.FindFirst("FullName")?.Value ?? User.Identity?.Name ?? "Guest";
+    var isStaff   = User.IsInRole("Staff");
+    var roleLabel = isStaff ? "Staff" : "Member";
+    var initial   = string.IsNullOrWhiteSpace(fullName) ? "?" : fullName.Trim().Substring(0, 1).ToUpper();
+    var firstName = string.IsNullOrWhiteSpace(fullName) ? "there" : fullName.Trim().Split(' ')[0];
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foundation Activities Management</title>
+    <link rel="stylesheet" href="~/css/DashStaff.css" />
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-mark">M</div>
+            <span>MealCare</span>
+        </div>
+
+        <nav class="navigation">
+
+            <a href="#" class="nav-link active" data-nav="home">
+                <span>Home</span>
+            </a>
+
+            <a href="/Home/Profile" class="nav-link" data-nav="profile">
+                <span>My Profile</span>
+            </a>
+
+            <a href="/Home/FoodDonations" class="nav-link" data-nav="food-donations">
+                <span>Food Donations</span>
+            </a>
+
+            <a href="/Home/ClothingDonations" class="nav-link" data-nav="clothing-donations">
+                <span>Clothing Donations</span>
+            </a>
+
+            <a href="#" class="nav-link" data-nav="attendance">
+                <span>Attendance</span>
+            </a>
+
+            <div class="menu-group">
+                <button class="menu-header" type="button">
+                    <span>Inventory</span>
+                    <span class="arrow">⌄</span>
+                </button>
+
+                <div class="submenu">
+                    <div>
+                        <a href="/Home/FoodStock" class="active">Food Stock</a>
+                        <a href="/Home/ClothingStock" class="active">Clothing Stock</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-group">
+                <button class="menu-header" type="button">
+                    <span>Pledges</span>
+                    <span class="arrow">⌄</span>
+                </button>
+
+                <div class="submenu">
+                    <div>
+                        <a href="/Home/Pledges">View Pledges</a>
+                        <!--
+                            Updating needs a specific pledge, so this link just brings
+                            the user back here to pick a row and click "Update Status".
+                        -->
+                        <a href="/Home/Pledges">Update Pledge Status</a>
+                    </div>
+                </div>
+            </div>
+
+            <a href="#" class="nav-link" data-nav="reports">
+                <span>Reports</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="#" class="nav-link">
+                <span>Settings</span>
+            </a>
+            <a href="#" class="nav-link logout">
+                <span>Sign Out</span>
+            </a>
+        </div>
+
+    </aside>
+
+    <!-- Main Area -->
+    <main class="main" id="main">
+
+        <header class="topbar">
+
+            <button id="navigationButton" class="navigation-button" type="button" aria-label="Toggle sidebar">
+                ☰
+            </button>
+
+            <div class="page-title">MealCare</div>
+
+            <a href="/Home/Profile" class="user" title="My Profile">
+                <div class="avatar">@initial</div>
+                <div class="user-details">
+                    <strong>@fullName</strong>
+                    <small>@roleLabel</small>
+                </div>
+            </a>
+
+        </header>
+
+
+        <section class="content">
+
+            <div class="welcome-section">
+                <div>
+                    <h1>Good morning, @firstName</h1>
+                    <p>Here's what's happening with your foundation today.</p>
+                </div>
+
+                <button class="primary-button" type="button" data-open-modal="donation">
+                    + Record Donation
+                </button>
+            </div>
+
+
+            <!-- Stats -->
+            <div class="stats">
+
+                <div class="stat-card">
+                    <div class="stat-icon">🍲</div>
+                    <div>
+                        <span>Food Donations</span>
+                        <strong id="statFood">124</strong>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">👕</div>
+                    <div>
+                        <span>Clothing Items</span>
+                        <strong id="statClothing">38</strong>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div>
+                        <span>Beneficiaries</span>
+                        <strong id="statBeneficiaries">245</strong>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">🎁</div>
+                    <div>
+                        <span>Active Pledges</span>
+                        <strong id="statPledges">16</strong>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- LOWER CONTENT -->
+            <div class="dashboard-grid">
+
+                <!-- Recent Activities -->
+                <div class="panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Recent Activities</h2>
+                            <p>Latest activity within the foundation</p>
+                        </div>
+                        <a href="#">View all</a>
+                    </div>
+
+                    <div class="activity-list" id="activityList">
+
+                        <div class="activity">
+                            <div class="activity-icon">🍲</div>
+                            <div class="activity-details">
+                                <strong>Food donation recorded</strong>
+                                <span>25 food items were added to stock.</span>
+                            </div>
+                            <time>10:30 AM</time>
+                        </div>
+
+                        <div class="activity">
+                            <div class="activity-icon">👥</div>
+                            <div class="activity-details">
+                                <strong>Beneficiary attendance</strong>
+                                <span>42 beneficiaries recorded today.</span>
+                            </div>
+                            <time>09:45 AM</time>
+                        </div>
+
+                        <div class="activity">
+                            <div class="activity-icon">👕</div>
+                            <div class="activity-details">
+                                <strong>Clothing donation received</strong>
+                                <span>18 clothing items received.</span>
+                            </div>
+                            <time>09:20 AM</time>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Quick Actions -->
+                <div class="panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Quick Actions</h2>
+                            <p>Frequently used activities</p>
+                        </div>
+                    </div>
+
+                    <button class="quick-action" type="button" data-open-modal="donation-food">
+                        <span>🍲</span>
+                        Record Food Donation
+                    </button>
+
+                    <button class="quick-action" type="button" data-open-modal="donation-clothing">
+                        <span>👕</span>
+                        Record Clothing Donation
+                    </button>
+
+                    <button class="quick-action" type="button" data-open-modal="attendance">
+                        <span>👥</span>
+                        Record Attendance
+                    </button>
+
+                    <button class="quick-action" type="button" id="viewPledgesAction">
+                        <span>🎁</span>
+                        View Pledges
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+
+        <div class="modal-heading">
+            <div>
+                <h3 id="modalTitle">Record a donation</h3>
+                <p id="modalSubtitle">Add newly received items to stock.</p>
+            </div>
+            <button type="button" class="modal-close" id="modalClose" aria-label="Close">✕</button>
+        </div>
+
+        <form id="modalForm">
+
+            <div id="donationFields">
+
+                <div class="field">
+                    <label for="donationType">Donation type</label>
+                    <select id="donationType">
+                        <option value="food">Food</option>
+                        <option value="clothing">Clothing</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="donationQty">Quantity of items</label>
+                    <input type="number" id="donationQty" min="1" step="1" placeholder="e.g. 20" />
+                </div>
+
+            </div>
+
+            <div id="attendanceFields" hidden>
+
+                <div class="field">
+                    <label for="attendanceCount">Beneficiaries visiting today</label>
+                    <input type="number" id="attendanceCount" min="1" step="1" placeholder="e.g. 12" />
+                </div>
+
+            </div>
+
+            <div class="modal-actions">
+                <!-- type="button" = never submits the form, JS just closes the modal -->
+                <button type="button" class="secondary-button" id="modalCancel">Cancel</button>
+                <!-- type="submit" = fires the form's submit event -->
+                <button type="submit" class="primary-button">Save</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<div class="toast-stack" id="toastStack"></div>
+
+
+<script src="~/js/DashStaff.js"></script>
+
+</body>
+
+</html>

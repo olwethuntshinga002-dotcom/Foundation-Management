@@ -1,0 +1,30 @@
+/* Add to the bottom of wwwroot/css/login.css */
+
+.create-account {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.create-account a {
+    color: #2e7d32;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.create-account a:hover {
+    text-decoration: underline;
+}
+
+.field-error {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: #c62828;
+}
+
+/* The register inputs use asp-for, so give them the same look as the login inputs */
+.input-container input:not([type="checkbox"]) {
+    width: 100%;
+}

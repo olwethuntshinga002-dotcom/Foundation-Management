@@ -1,0 +1,182 @@
+@model List<FoundationManagement.Models.ClothingDonationDetailRow>
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clothing Stock — MealCare</title>
+    <link rel="stylesheet" href="~/css/DashStaff.css" />
+    <link rel="stylesheet" href="~/css/FoodDonations.css" />
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-mark">M</div>
+            <span>MealCare</span>
+        </div>
+
+        <nav class="navigation">
+
+            <a href="/Home/Index" class="nav-link" data-nav="home">
+                <!-- <span class="nav-icon">⌂</span> -->
+                <span>Home</span>
+            </a>
+
+            <a href="#" class="nav-link" data-nav="profile">
+                <!-- <span class="nav-icon">◐</span> -->
+                <span>My Profile</span>
+            </a>
+
+            <a href="/Home/FoodDonations" class="nav-link" data-nav="food-donations">
+                <!-- <span class="nav-icon">🍲</span> -->
+                <span>Food Donations</span>
+            </a>
+
+            <a href="/Home/ClothingDonations" class="nav-link" data-nav="clothing-donations">
+                <!-- <span class="nav-icon">👕</span> -->
+                <span>Clothing Donations</span>
+            </a>
+
+            <a href="#" class="nav-link" data-nav="attendance">
+                <!-- <span class="nav-icon">✓</span> -->
+                <span>Attendance</span>
+            </a>
+
+            <div class="menu-group open">
+
+                <button class="menu-header" type="button">
+                    <span>
+                        <!-- <span class="nav-icon">▣</span> -->
+                        Inventory
+                    </span>
+                    <span class="arrow">⌄</span>
+                </button>
+
+                <div class="submenu">
+                    <div>
+                        <a href="/Home/FoodStock" class="active">Food Stock</a>
+                        <a href="/Home/ClothingStock" class="active">Clothing Stock</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <a href="#" class="nav-link" data-nav="pledges">
+                <!-- <span class="nav-icon">☆</span> -->
+                <span>Pledges</span>
+            </a>
+
+            <a href="#" class="nav-link" data-nav="reports">
+                <!-- <span class="nav-icon">▥</span> -->
+                <span>Reports</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="#" class="nav-link">
+                <!-- <span class="nav-icon">⚙</span> -->
+                <span>Settings</span>
+            </a>
+            <a href="/Account/Logout" class="nav-link logout">
+                <span class="nav-icon">↪</span>
+                <span>Sign Out</span>
+            </a>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN AREA -->
+
+    <main class="main" id="main">
+
+        <header class="topbar">
+
+            <button id="navigationButton" class="navigation-button" type="button" aria-label="Toggle sidebar">
+                ☰
+            </button>
+
+            <div class="page-title">Clothing Stock</div>
+
+            <div class="user">
+                <div class="avatar">A</div>
+                <div class="user-details">
+                    <strong>Amy</strong>
+                    <small>Staff</small>
+                </div>
+            </div>
+
+        </header>
+
+
+        <section class="content">
+
+            <div class="page-header">
+                <div>
+                    <h1>Clothing Stock</h1>
+                    <p>Every clothing donation received, most recent first.</p>
+                </div>
+            </div>
+
+            <div class="form-panel">
+
+                @if (Model.Count == 0)
+                {
+                    <p style="color: var(--ink-muted); font-size: 14px;">No clothing donations recorded yet.</p>
+                }
+                else
+                {
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Clothing Type</th>
+                                    <th>Size Catergory</th>
+                                    <th>Condition Status</th>
+                                    <th>Donation Date</th>
+                                    <th>Recorded By</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var row in Model)
+                                {
+                                    <tr>
+                                        <td>@row.ClothingType</td>
+                                        <td>@row.SizeCatergory</td>
+                                        <td>@row.ConditionStatus</td>
+                                        <td>@row.DonationDate</td>
+                                        <td>@row.RecordedBy</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<div class="toast-stack" id="toastStack"></div>
+
+<script src="~/js/DashStaff.js"></script>
+
+</body>
+
+</html>

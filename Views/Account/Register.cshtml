@@ -1,0 +1,152 @@
+@model FoundationManagement.Models.RegisterPageViewModel
+@{
+    ViewData["Title"] = "Create account";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foundation Management - Create account</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/auth.css">
+</head>
+
+<body>
+<main class="page-center">
+    <section class="card wide">
+
+        <div class="logo"><img src="~/images/logo.png" alt="Foundation Logo"></div>
+        <h1>Create your account</h1>
+        <p class="sub">Choose how you'd like to use Foundation Management.</p>
+
+        @if (!string.IsNullOrEmpty(ViewBag.RegisterError as string))
+        {
+            <div class="alert alert-error" role="alert">@ViewBag.RegisterError</div>
+        }
+
+        <div class="switch" role="tablist">
+            <button type="button" id="tabDonor" data-tab="donor" role="tab"
+                    class="@(Model.ActiveTab == "donor" ? "active" : "")">
+                <strong>I'm a Donor</strong>
+                <span>Give and track my donations</span>
+            </button>
+            <button type="button" id="tabFoundation" data-tab="foundation" role="tab"
+                    class="@(Model.ActiveTab == "foundation" ? "active" : "")">
+                <strong>NGO / Charity</strong>
+                <span>Register a foundation as its manager</span>
+            </button>
+        </div>
+
+        <!-- DONOR -->
+        <div class="panel @(Model.ActiveTab == "donor" ? "active" : "")" id="panelDonor">
+            <form asp-action="RegisterDonor" asp-controller="Account" method="post" novalidate>
+                <div class="field">
+                    <label asp-for="Donor.FullName"></label>
+                    <input asp-for="Donor.FullName" type="text" autocomplete="name" placeholder="e.g. Thandi Mokoena">
+                    <span asp-validation-for="Donor.FullName" class="err"></span>
+                </div>
+                <div class="row">
+                    <div class="field">
+                        <label asp-for="Donor.Email"></label>
+                        <input asp-for="Donor.Email" type="email" autocomplete="email" placeholder="you@example.com">
+                        <span asp-validation-for="Donor.Email" class="err"></span>
+                    </div>
+                    <div class="field">
+                        <label asp-for="Donor.Phone">Phone (optional)</label>
+                        <input asp-for="Donor.Phone" type="tel" autocomplete="tel" placeholder="082 000 0000">
+                        <span asp-validation-for="Donor.Phone" class="err"></span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label asp-for="Donor.Password"></label>
+                    <div class="pw-wrap">
+                        <input asp-for="Donor.Password" type="password" autocomplete="new-password" data-strength="donorStrength" placeholder="At least 8 characters">
+                        <button type="button" class="pw-toggle" data-toggle="Donor_Password">Show</button>
+                    </div>
+                    <div class="strength"><span id="donorStrength"></span></div>
+                    <div class="strength-label" id="donorStrengthLabel"></div>
+                    <span asp-validation-for="Donor.Password" class="err"></span>
+                </div>
+                <div class="field">
+                    <label asp-for="Donor.ConfirmPassword"></label>
+                    <input asp-for="Donor.ConfirmPassword" type="password" autocomplete="new-password">
+                    <span asp-validation-for="Donor.ConfirmPassword" class="err"></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Create donor account</button>
+            </form>
+        </div>
+
+        <!-- FOUNDATION -->
+        <div class="panel @(Model.ActiveTab == "foundation" ? "active" : "")" id="panelFoundation">
+            <form asp-action="RegisterFoundation" asp-controller="Account" method="post" novalidate>
+                <div class="section-title">Foundation</div>
+                <div class="field">
+                    <label asp-for="Foundation.FoundationName"></label>
+                    <input asp-for="Foundation.FoundationName" type="text" placeholder="e.g. MealCare Foundation">
+                    <span asp-validation-for="Foundation.FoundationName" class="err"></span>
+                </div>
+                <div class="row">
+                    <div class="field">
+                        <label asp-for="Foundation.EmailDomain"></label>
+                        <input asp-for="Foundation.EmailDomain" type="text" placeholder="mealcare.org" autocapitalize="off" spellcheck="false">
+                        <div class="hint">Staff usernames will look like <b id="domainPreview">name@mealcare.org</b></div>
+                        <span asp-validation-for="Foundation.EmailDomain" class="err"></span>
+                    </div>
+                    <div class="field">
+                        <label asp-for="Foundation.RegistrationNumber">Registration no. (optional)</label>
+                        <input asp-for="Foundation.RegistrationNumber" type="text" placeholder="NPO number">
+                        <span asp-validation-for="Foundation.RegistrationNumber" class="err"></span>
+                    </div>
+                </div>
+
+                <div class="section-title">You (the manager)</div>
+                <div class="row">
+                    <div class="field">
+                        <label asp-for="Foundation.ManagerName"></label>
+                        <input asp-for="Foundation.ManagerName" type="text" autocomplete="name">
+                        <span asp-validation-for="Foundation.ManagerName" class="err"></span>
+                    </div>
+                    <div class="field">
+                        <label asp-for="Foundation.ManagerEmail"></label>
+                        <input asp-for="Foundation.ManagerEmail" type="email" autocomplete="email">
+                        <span asp-validation-for="Foundation.ManagerEmail" class="err"></span>
+                    </div>
+                </div>
+                <div class="field">
+                    <label asp-for="Foundation.Password"></label>
+                    <div class="pw-wrap">
+                        <input asp-for="Foundation.Password" type="password" autocomplete="new-password" data-strength="foundStrength" placeholder="At least 8 characters">
+                        <button type="button" class="pw-toggle" data-toggle="Foundation_Password">Show</button>
+                    </div>
+                    <div class="strength"><span id="foundStrength"></span></div>
+                    <div class="strength-label" id="foundStrengthLabel"></div>
+                    <span asp-validation-for="Foundation.Password" class="err"></span>
+                </div>
+                <div class="field">
+                    <label asp-for="Foundation.ConfirmPassword"></label>
+                    <input asp-for="Foundation.ConfirmPassword" type="password" autocomplete="new-password">
+                    <span asp-validation-for="Foundation.ConfirmPassword" class="err"></span>
+                </div>
+                <p class="hint" style="margin-bottom:14px">
+                    Registering makes you this foundation's manager. You can then create accounts for your staff.
+                </p>
+                <button type="submit" class="btn btn-primary">Register foundation</button>
+            </form>
+        </div>
+
+        <p class="card-foot">
+            Already have an account? <a asp-action="Login" asp-controller="Account">Log in</a>
+            &nbsp;·&nbsp; <a asp-action="Welcome" asp-controller="Account">Back</a>
+        </p>
+    </section>
+</main>
+
+<script src="~/js/register.js"></script>
+</body>
+</html>

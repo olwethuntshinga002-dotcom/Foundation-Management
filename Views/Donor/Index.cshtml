@@ -1,0 +1,90 @@
+@{
+    ViewData["Title"] = "Home";
+    Layout = "~/Views/Shared/_DonorLayout.cshtml";
+
+    var fullName  = User.FindFirst("FullName")?.Value ?? User.Identity?.Name ?? "there";
+    var firstName = string.IsNullOrWhiteSpace(fullName) ? "there" : fullName.Trim().Split(' ')[0];
+}
+
+<div class="welcome-section">
+    <div>
+        <h1>Welcome, @firstName</h1>
+        <p>Helping those in need, one meal at a time.</p>
+    </div>
+
+    <a href="/Donor/DonatableItems" class="primary-button">+ Make a Donation</a>
+</div>
+
+<!-- Stats (replace the numbers with values from your controller / database) -->
+<div class="stats">
+
+    <div class="stat-card">
+        <div class="stat-icon">🎁</div>
+        <div>
+            <span>My Pledges</span>
+            <strong>@(ViewBag.PledgeCount ?? 0)</strong>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">🍲</div>
+        <div>
+            <span>Food Donated</span>
+            <strong>@(ViewBag.FoodCount ?? 0)</strong>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">👕</div>
+        <div>
+            <span>Clothing Donated</span>
+            <strong>@(ViewBag.ClothingCount ?? 0)</strong>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon">🏢</div>
+        <div>
+            <span>NGOs Supported</span>
+            <strong>@(ViewBag.NgoCount ?? 0)</strong>
+        </div>
+    </div>
+
+</div>
+
+<div class="dashboard-grid">
+
+    <div class="panel">
+        <div class="panel-heading">
+            <div>
+                <h2>Recent Donations</h2>
+                <p>Your latest contributions</p>
+            </div>
+            <a href="/Donor/MyDonations">View all</a>
+        </div>
+
+        <div class="activity-list">
+            <div class="activity">
+                <div class="activity-details">
+                    <strong>No donations yet</strong>
+                    <span>When you donate, they will appear here.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-heading">
+            <div>
+                <h2>Quick Actions</h2>
+                <p>Frequently used activities</p>
+            </div>
+        </div>
+
+        <a class="quick-action" href="/Donor/NgoInventory"><span>🏢</span> Browse NGOs Inventory</a>
+        <a class="quick-action" href="/Donor/Pledges"><span>🎁</span> Make a Pledge</a>
+        <a class="quick-action" href="/Donor/DonatableItems"><span>🍲</span> See Donatable Items</a>
+        <a class="quick-action" href="/Donor/MyDonations"><span>📋</span> My Donations</a>
+    </div>
+
+</div>

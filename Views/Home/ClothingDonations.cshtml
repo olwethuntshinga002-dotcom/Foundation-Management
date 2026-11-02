@@ -1,0 +1,267 @@
+@model FoundationManagement.Models.ClothingDonationFormViewModel
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clothing Donations Received — MealCare</title>
+    <link rel="stylesheet" href="~/css/DashStaff.css" />
+    <link rel="stylesheet" href="~/css/FoodDonations.css" />
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-mark">M</div>
+            <span>MealCare</span>
+        </div>
+
+        <nav class="navigation">
+
+            <a href="/Home/Index" class="nav-link" data-nav="home">
+                <!-- <span class="nav-icon">⌂</span> -->
+                <span>Home</span>
+            </a>
+
+            <a href="#" class="nav-link" data-nav="profile">
+                <!-- <span class="nav-icon">◐</span> -->
+                <span>My Profile</span>
+            </a>
+
+            <a href="/Home/FoodDonations" class="nav-link" data-nav="food-donations">
+                <!-- <span class="nav-icon">🍲</span> -->
+                <span>Food Donations</span>
+            </a>
+
+            <a href="/Home/ClothingDonations" class="nav-link active" data-nav="clothing-donations">
+                <!-- <span class="nav-icon">👕</span> -->
+                <span>Clothing Donations</span>
+            </a>
+
+            <a href="#" class="nav-link" data-nav="attendance">
+                <!-- <span class="nav-icon">✓</span> -->
+                <span>Attendance</span>
+            </a>
+
+            <div class="menu-group">
+
+                <button class="menu-header" type="button">
+                    <span>
+                        <span class="nav-icon">▣</span>
+                        Inventory
+                    </span>
+                    <span class="arrow">⌄</span>
+                </button>
+
+                <div class="submenu">
+                    <div>
+                        <a href="#">Food Stock</a>
+                        <a href="#">Clothing Stock</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <a href="#" class="nav-link" data-nav="pledges">
+                <!-- <span class="nav-icon">☆</span> -->
+                <span>Pledges</span>
+            </a>
+
+            <a href="#" class="nav-link" data-nav="reports">
+                <!-- <span class="nav-icon">▥</span> -->
+                <span>Reports</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="#" class="nav-link">
+                <span class="nav-icon">⚙</span>
+                <span>Settings</span>
+            </a>
+            <a href="#" class="nav-link logout">
+                <span class="nav-icon">↪</span>
+                <span>Sign Out</span>
+            </a>
+        </div>
+
+    </aside>
+
+
+    <!-- Main Area -->
+
+    <main class="main" id="main">
+
+        <header class="topbar">
+
+            <button id="navigationButton" class="navigation-button" type="button" aria-label="Toggle sidebar">
+                ☰
+            </button>
+
+            <div class="page-title">Clothing Donations Received</div>
+
+            <div class="user">
+                <div class="avatar">A</div>
+                <div class="user-details">
+                    <strong>Amy</strong>
+                    <small>Staff</small>
+                </div>
+            </div>
+
+        </header>
+
+
+        <section class="content">
+
+            <div class="page-header">
+                <div>
+                    <h1>Clothing Donations Received</h1>
+                    <p>Log a donor's contribution and the clothing items received in it.</p>
+                </div>
+            </div>
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="form-panel" style="border-color: var(--danger); margin-bottom: 16px;">
+                    <div asp-validation-summary="All" style="color: var(--danger); font-size: 13.5px;"></div>
+                </div>
+            }
+
+            <form asp-action="ClothingDonations" asp-controller="Home" method="post" novalidate>
+
+                <!-- Child Table: Clothing Donations -->
+                <div class="form-panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Clothing Donation Details</h2>
+                            <p>Item specifics for the clothing received</p>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="field">
+                            <label for="clothingType">Clothing Type</label>
+                            <select id="clothingType" name="ClothingType" required>
+                                <option value="" disabled selected>Select clothing type</option>
+                                <option value="Tops">Tops</option>
+                                <option value="Bottoms">Bottoms</option>
+                                <option value="Outerwear">Outerwear</option>
+                                <option value="Footwear">Footwear</option>
+                                <option value="Underwear">Underwear</option>
+                                <option value="Accessories">Accessories</option>
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="sizeCategory">Size Category</label>
+                            <select id="sizeCategory" name="SizeCategory" required>
+                                <option value="" disabled selected>Select size</option>
+                                <option value="Infant">Infant</option>
+                                <option value="Child">Child</option>
+                                <option value="Small">Small (Adult)</option>
+                                <option value="Medium">Medium (Adult)</option>
+                                <option value="Large">Large (Adult)</option>
+                                <option value="XL">XL (Adult)</option>
+                            </select>
+                        </div>
+
+                        <div class="field field-wide">
+                            <label for="conditionStatus">Condition Status</label>
+                            <select id="conditionStatus" name="ConditionStatus" required>
+                                <option value="" disabled selected>Select condition</option>
+                                <option value="New">New (with tags)</option>
+                                <option value="Like New">Like New</option>
+                                <option value="Gently Used">Gently Used</option>
+                                <option value="Worn">Worn</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Mother Table: Donations -->
+                <div class="form-panel">
+
+                    <div class="panel-heading">
+                        <div>
+                            <h2>Donations</h2>
+                            <p>Donor and transaction information</p>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="field">
+                            <label for="donorId">Donor Name</label>
+                            <select id="donorId" name="DonorId" required>
+                                <option value="" disabled selected>Select donor</option>
+                                @foreach (var donor in (List<FoundationManagement.Models.DonorOption>)ViewBag.Donors)
+                                {
+                                    <option value="@donor.DonorId">@donor.Name</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="field">
+                            <label for="donationDate">Donation Date</label>
+                            <input type="date" id="donationDate" name="DonationDate" required />
+                        </div>
+
+                        <div class="field">
+                            <label for="itemCount">Item Count</label>
+                            <input type="number" id="itemCount" name="ItemCount" min="1" step="1" placeholder="e.g. 15" />
+                        </div>
+
+                        <div class="field">
+                            <label for="createdAt">Created At</label>
+                            <input type="text" id="createdAt" disabled />
+                        </div>
+
+                        <div class="field">
+                            <label for="recordedBy">Recorded By</label>
+                            <input type="text" id="recordedBy" value="AMY" disabled />
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <a href="/Home/ClothingDonations" class="secondary-button" style="text-align:center; text-decoration:none;">Cancel</a>
+                    <button type="submit" class="primary-button">Create</button>
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</div>
+
+<div class="toast-stack" id="toastStack"></div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="toast" id="successToast">@TempData["SuccessMessage"]</div>
+}
+
+<script src="~/js/DashStaff.js"></script>
+<script src="~/js/FoodDonations.js"></script>
+
+</body>
+
+</html>

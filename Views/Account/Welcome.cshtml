@@ -1,0 +1,78 @@
+@{
+    ViewData["Title"] = "Welcome";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foundation Management - Welcome</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;1,9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/auth.css">
+    <link rel="stylesheet" href="~/css/welcome.css">
+</head>
+
+<body>
+<div class="welcome">
+
+    <header class="nav">
+        <div class="brand">
+            <img src="~/images/logo.png" alt="">
+            Foundation Management
+        </div>
+        <nav class="nav-actions">
+            <a class="btn btn-ghost" asp-controller="Account" asp-action="Login">Log In</a>
+            <a class="btn btn-primary" asp-controller="Account" asp-action="Register">Sign Up</a>
+        </nav>
+    </header>
+
+    <main class="hero">
+        <section>
+            <span class="eyebrow">For donors &amp; foundations</span>
+            <h1>Giving, <em>organised</em> and made simple.</h1>
+            <p class="lead">
+                Foundations manage food and clothing donations, beneficiary attendance and pledges in one
+                place. Donors give with confidence and see where it goes.
+            </p>
+            <div class="cta">
+                <a class="btn btn-primary" asp-controller="Account" asp-action="Register">Create an account</a>
+                <a class="btn btn-ghost" asp-controller="Account" asp-action="Login">I already have an account</a>
+            </div>
+        </section>
+
+        <aside class="art" aria-hidden="true">
+            <h3>Everything your foundation does, in one view</h3>
+            <div class="stat-row">
+                <div class="stat"><b>Food</b><span>Donations &amp; stock</span></div>
+                <div class="stat"><b>Clothing</b><span>Donations &amp; stock</span></div>
+                <div class="stat"><b>Pledges</b><span>Tracked to fulfilment</span></div>
+                <div class="stat"><b>Attendance</b><span>Beneficiary records</span></div>
+            </div>
+            <p class="note">Register your foundation and you become its manager, free to add your own staff in minutes.</p>
+        </aside>
+    </main>
+
+    <section class="features">
+        <article class="feature">
+            <h3>Donors</h3>
+            <p>Sign up in a minute, make donations and pledges, and follow their progress.</p>
+        </article>
+        <article class="feature">
+            <h3>Foundations</h3>
+            <p>Register your NGO or charity. The person who signs up becomes the foundation's manager.</p>
+        </article>
+        <article class="feature">
+            <h3>Staff</h3>
+            <p>Managers create staff accounts with their foundation email. Staff sign in and set their own password.</p>
+        </article>
+    </section>
+
+    <footer class="footer">&copy; @DateTime.Now.Year Foundation Management</footer>
+</div>
+</body>
+</html>

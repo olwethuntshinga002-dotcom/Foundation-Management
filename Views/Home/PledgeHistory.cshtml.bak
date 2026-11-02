@@ -1,0 +1,179 @@
+@*
+//This is for the donor side
+@model List<FoundationManagement.Models.DonorPledgeRow>
+@{
+    Layout = null;
+    // Name shown in the top bar. Falls back to "Donor" so the page never crashes if it is missing.
+    var donorName = ViewBag.DonorName as string;
+    if (string.IsNullOrWhiteSpace(donorName)) { donorName = "Donor"; }
+    var donorInitial = donorName.Trim().Substring(0, 1).ToUpper();
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pledge History — MealCare</title>
+    <link rel="stylesheet" href="~/css/DashStaff.css" />
+    <link rel="stylesheet" href="~/css/FoodDonations.css" />
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar" id="sidebar">
+
+        <div class="brand">
+            <div class="brand-mark">M</div>
+            <span>MealCare</span>
+        </div>
+
+        <nav class="navigation">
+
+            <a href="/Donor/Index" class="nav-link" data-nav="home">
+                <span class="nav-icon">⌂</span>
+                <span>Home</span>
+            </a>
+
+            <a href="#" class="nav-link" data-nav="profile">
+                <span class="nav-icon">◐</span>
+                <span>My Profile</span>
+            </a>
+
+            <a href="/Donor/CreatePledge" class="nav-link" data-nav="create-pledge">
+                <span class="nav-icon">☆</span>
+                <span>Create Pledge</span>
+            </a>
+
+            <a href="/Donor/PledgeHistory" class="nav-link active" data-nav="pledge-history">
+                <span class="nav-icon">⏱</span>
+                <span>Pledge History</span>
+            </a>
+
+            <a href="#" class="nav-link" data-nav="needs">
+                <span class="nav-icon">❤</span>
+                <span>Organisation Needs</span>
+            </a>
+
+            <a href="#" class="nav-link" data-nav="items">
+                <span class="nav-icon">▣</span>
+                <span>Donatable Items</span>
+            </a>
+
+            <a href="#" class="nav-link" data-nav="donation-history">
+                <span class="nav-icon">✓</span>
+                <span>Donation History</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <a href="#" class="nav-link">
+                <span class="nav-icon">⚙</span>
+                <span>Settings</span>
+            </a>
+            <a href="/Account/Logout" class="nav-link logout">
+                <span class="nav-icon">↪</span>
+                <span>Sign Out</span>
+            </a>
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN AREA -->
+
+    <main class="main" id="main">
+
+        <header class="topbar">
+
+            <button id="navigationButton" class="navigation-button" type="button" aria-label="Toggle sidebar">
+                ☰
+            </button>
+
+            <div class="page-title">Pledge History</div>
+
+            <div class="user">
+                <div class="avatar">@donorInitial</div>
+                <div class="user-details">
+                    <strong>@donorName</strong>
+                    <small>Donor</small>
+                </div>
+            </div>
+
+        </header>
+
+
+        <section class="content">
+
+            <div class="page-header">
+                <div>
+                    <h1>Pledge History</h1>
+                    <p>Track where each of your pledges stands, most recent first.</p>
+                </div>
+                <a href="/Donor/CreatePledge" class="primary-button" style="text-decoration:none;">+ New Pledge</a>
+            </div>
+
+            <div class="form-panel">
+
+                @if (Model.Count == 0)
+                {
+                    <p style="color: var(--ink-muted); font-size: 14px;">You have not made any pledges yet.</p>
+                }
+                else
+                {
+                    <div style="overflow-x: auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Pledged On</th>
+                                    <th>Donation Type</th>
+                                    <th>Item</th>
+                                    <th>Quantity</th>
+                                    <th>Unit</th>
+                                    <th>Expected Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var row in Model)
+                                {
+                                    <tr>
+                                        <td>@row.CreatedAt.ToString("yyyy-MM-dd")</td>
+                                        <td>@row.DonationType</td>
+                                        <td>@row.ItemName</td>
+                                        <td>@row.Quantity</td>
+                                        <td>@row.UnitOfMeasure</td>
+                                        <td>@row.ExpectedDate.ToString("yyyy-MM-dd")</td>
+                                        <td>@row.Status</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<div class="toast-stack" id="toastStack"></div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="toast" id="successToast">@TempData["SuccessMessage"]</div>
+}
+
+<script src="~/js/DashStaff.js"></script>
+
+</body>
+
+</html>
